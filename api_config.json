@@ -1,0 +1,8 @@
+{
+  "provider": "gemini",
+  "api_key": "",
+  "model": "gemini-2.5-flash",
+  "base_url": "",
+  "niche": "Chia sẻ cuộc sống, xu hướng, mẹo hay, giải trí",
+  "style": "Hấp dẫn, giữ chân 3s đầu, kèm call to action"
+}

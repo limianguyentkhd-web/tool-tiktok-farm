@@ -1,0 +1,25 @@
+{
+  "_huong_dan": "Gán chủ đề và kênh TikTok cho từng máy điện thoại theo Serial ADB",
+  "ce031713dba2c72101": {
+    "kenh_tiktok": "@nguyennminhh256",
+    "chu_de": "phim",
+    "ten_chu_de": "Review Điện Ảnh & Marvel",
+    "thu_muc_video": "videos/phim",
+    "link_kenh_nguon": "https://www.youtube.com/@zim_video/shorts",
+    "ghi_chu": "Kênh chuyên tóm tắt, chi tiết thú vị vũ trụ Marvel"
+  },
+  "ce01182188dbdcee0c": {
+    "kenh_tiktok": "@kenh_mau_02",
+    "chu_de": "gia_dung",
+    "ten_chu_de": "Gia Dụng Thông Minh / Affiliate",
+    "thu_muc_video": "videos/gia_dung",
+    "ghi_chu": "Kênh review đồ tiện ích, đồ gia dụng gắn giỏ hàng"
+  },
+  "9889db393438353953": {
+    "kenh_tiktok": "@kenh_mau_03",
+    "chu_de": "thoi_trang",
+    "ten_chu_de": "Douyin OOTD & Thời Trang",
+    "thu_muc_video": "videos/thoi_trang",
+    "ghi_chu": "Kênh biến hình, outfit đường phố Douyin"
+  }
+}

@@ -1,0 +1,45 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.spec
+
+# PyInstaller build outputs (Dung luong rat lon)
+build/
+dist/
+
+# Binaries, APK & Android dumps
+*.apk
+*.xapk
+*.tar
+*.gz
+*.zip
+bumx_apks/
+golike_apks/
+extracted_webview/
+bin/
+
+# Video & Audio files (Dung luong nang)
+raw_videos/
+videos/
+*.mp4
+*.webm
+*.mp3
+
+# ADB screen dumps and test captures
+*.png
+*.jpg
+*.jpeg
+*.xml
+logs/
+*.log
+
+# Database test files
+*.db
+*.sqlite3
+
+# IDE & OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

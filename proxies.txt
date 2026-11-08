@@ -1,0 +1,8 @@
+# Dán danh sách 17 Proxy của bạn vào đây (mỗi dòng 1 Proxy tương ứng cho từng máy).
+# Hỗ trợ các định dạng:
+# 1. vless://... hoặc vmess://... hoặc ss://...
+# 2. IP:PORT:USER:PASS
+# 3. IP:PORT
+# Ví dụ:
+# 103.150.12.34:8080:user1:pass1
+# 103.150.12.35:8080:user2:pass2

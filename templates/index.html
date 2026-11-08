@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TikTok Autonomous Farm Studio - Web Console</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #11111b; }
+    ::-webkit-scrollbar-thumb { background: #313244; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #45475a; }
+    .glow-cyan { box-shadow: 0 0 15px rgba(137, 180, 250, 0.2); }
+    .glow-green { box-shadow: 0 0 15px rgba(166, 227, 161, 0.25); }
+  </style>
+</head>
+<body class="bg-[#11111b] text-[#cdd6f4] min-h-screen flex flex-col font-sans selection:bg-[#89b4fa] selection:text-[#11111b]">
+
+  <!-- Top Navigation Header -->
+  <header class="border-b border-[#313244] bg-[#181825]/90 backdrop-blur sticky top-0 z-50 px-6 py-3.5 flex flex-wrap items-center justify-between gap-4">
+    <div class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#89b4fa] to-[#cba6f7] flex items-center justify-center text-xl shadow-lg shadow-indigo-500/20">
+        ⚡
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
+          <h1 class="font-bold text-lg text-[#cdd6f4] tracking-tight">TikTok Farm Studio</h1>
+          <span class="text-xs px-2 py-0.5 rounded-full font-mono font-semibold bg-[#a6e3a1]/15 text-[#a6e3a1] border border-[#a6e3a1]/30">LIVE WEB</span>
+        </div>
+        <p class="text-xs text-[#a6adc8]">Hệ Thống Quản Trị Phone Farm & Reup Tự Hành Đa Thiết Bị</p>
+      </div>
+    </div>
+
+    <!-- Live System Badges -->
+    <div class="flex items-center gap-3 text-xs">
+      <div class="flex items-center gap-2 bg-[#1e1e2e] border border-[#313244] px-3 py-1.5 rounded-lg">
+        <span class="w-2.5 h-2.5 rounded-full bg-[#a6e3a1] animate-pulse"></span>
+        <span class="text-[#a6adc8]">ADB Hub:</span>
+        <span class="font-semibold text-[#a6e3a1]" id="statusAdb">Ports 5037-5039</span>
+      </div>
+      <div class="flex items-center gap-2 bg-[#1e1e2e] border border-[#313244] px-3 py-1.5 rounded-lg">
+        <span class="text-[#89b4fa]">🤖 AI Vision:</span>
+        <span class="font-semibold text-[#89b4fa]" id="statusAi">Gemini 2.5 Flash</span>
+      </div>
+      <div class="flex items-center gap-2 bg-[#1e1e2e] border border-[#313244] px-3 py-1.5 rounded-lg">
+        <span class="text-[#f9e2af]">📢 Telegram:</span>
+        <span class="font-semibold text-[#f9e2af]" id="statusTg">Active</span>
+      </div>
+      <button onclick="fetchLiveDevices()" class="bg-[#313244] hover:bg-[#45475a] text-[#cdd6f4] px-3 py-1.5 rounded-lg font-medium transition flex items-center gap-1.5 text-xs">
+        🔄 Làm Mới
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <div class="flex-1 flex flex-col p-5 max-w-[1700px] w-full mx-auto space-y-5">
+    
+    <!-- Metrics Overview Cards -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="bg-[#1e1e2e] border border-[#313244] rounded-xl p-4 flex items-center justify-between hover:border-[#89b4fa]/50 transition">
+        <div>
+          <p class="text-xs text-[#a6adc8] font-medium">Tổng Thiết Bị Box Farm</p>
+          <h3 class="text-2xl font-bold text-[#89b4fa] mt-1" id="metricTotal">...</h3>
+          <p class="text-[11px] text-[#a6e3a1] mt-0.5">● Cổng ADB Đang Lắng Nghe</p>
+        </div>
+        <div class="w-12 h-12 rounded-xl bg-[#89b4fa]/10 text-[#89b4fa] flex items-center justify-center text-2xl">📱</div>
+      </div>
+
+      <div class="bg-[#1e1e2e] border border-[#313244] rounded-xl p-4 flex items-center justify-between hover:border-[#a6e3a1]/50 transition">
+        <div>
+          <p class="text-xs text-[#a6adc8] font-medium">Trạng Thái Sẵn Sàng</p>
+          <h3 class="text-2xl font-bold text-[#a6e3a1] mt-1" id="metricReady">...</h3>
+          <p class="text-[11px] text-[#a6adc8] mt-0.5">Proxy v2rayNG đã cấu hình</p>
+        </div>
+        <div class="w-12 h-12 rounded-xl bg-[#a6e3a1]/10 text-[#a6e3a1] flex items-center justify-center text-2xl">✅</div>
+      </div>
+
+      <div class="bg-[#1e1e2e] border border-[#313244] rounded-xl p-4 flex items-center justify-between hover:border-[#cba6f7]/50 transition">
+        <div>
+          <p class="text-xs text-[#a6adc8] font-medium">Tổng Video Đã Đăng</p>
+          <h3 class="text-2xl font-bold text-[#cba6f7] mt-1" id="metricPosts">...</h3>
+          <p class="text-[11px] text-[#89b4fa] mt-0.5">Tự động tăng khi xuất xưởng</p>
+        </div>
+        <div class="w-12 h-12 rounded-xl bg-[#cba6f7]/10 text-[#cba6f7] flex items-center justify-center text-2xl">🎬</div>
+      </div>
+
+      <div class="bg-[#1e1e2e] border border-[#313244] rounded-xl p-4 flex items-center justify-between hover:border-[#f9e2af]/50 transition">
+        <div>
+          <p class="text-xs text-[#a6adc8] font-medium">Mắt Thần AI Cứu Hộ</p>
+          <h3 class="text-2xl font-bold text-[#f9e2af] mt-1">Sẵn Sàng</h3>
+          <p class="text-[11px] text-[#a6adc8] mt-0.5">Phản xạ tự động dập popup</p>
+        </div>
+        <div class="w-12 h-12 rounded-xl bg-[#f9e2af]/10 text-[#f9e2af] flex items-center justify-center text-2xl">🛡️</div>
+      </div>
+    </div>
+
+    <!-- Functional Navigation Tabs -->
+    <div class="flex items-center justify-between border-b border-[#313244] pb-2">
+      <div class="flex gap-2">
+        <button onclick="switchTab('dashboard')" id="tabBtn_dashboard" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold transition bg-[#89b4fa] text-[#11111b] shadow-sm">
+          📱 Dàn Máy & Điều Khiển
+        </button>
+        <button onclick="switchTab('profiles')" id="tabBtn_profiles" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold transition text-[#a6adc8] hover:text-[#cdd6f4] hover:bg-[#313244]">
+          👤 Kênh Nguồn & Nick TikTok
+        </button>
+        <button onclick="switchTab('video')" id="tabBtn_video" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold transition text-[#a6adc8] hover:text-[#cdd6f4] hover:bg-[#313244]">
+          🎬 Xử Lý Video & Lách Bản Quyền
+        </button>
+        <button onclick="switchTab('settings')" id="tabBtn_settings" class="tab-btn px-4 py-2 rounded-lg text-sm font-semibold transition text-[#a6adc8] hover:text-[#cdd6f4] hover:bg-[#313244]">
+          ⚙️ Mắt Thần AI & Telegram
+        </button>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <span class="text-xs text-[#a6adc8]">Chế độ:</span>
+        <span class="text-xs bg-[#89b4fa]/15 text-[#89b4fa] border border-[#89b4fa]/30 font-medium px-2 py-0.5 rounded">Trực Tuyến (Local Server)</span>
+      </div>
+    </div>
+
+    <!-- TAB 1: Dàn Máy & Bảng Điều Khiển -->
+    <section id="tab_dashboard" class="tab-content block space-y-4">
+      <div class="bg-[#1e1e2e] border border-[#313244] rounded-xl p-4 flex flex-wrap items-center justify-between gap-3 shadow-md">
+        <div class="flex flex-wrap items-center gap-2.5">
+          <button onclick="fetchLiveDevices()" class="bg-[#313244] hover:bg-[#45475a] text-[#cdd6f4] px-4 py-2 rounded-lg text-sm font-semibold flex items-center gap-2 transition active:scale-95">
+            🔍 Quét Thiết Bị (ADB Scan)
+          </button>
+          <button onclick="apiCall('/api/action/start_all', 'POST')" class="bg-[#a6e3a1] hover:bg-[#94e2d5] text-[#11111b] px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 transition glow-green active:scale-95">
+            🚀 Bắt Đầu Đăng Tự Động Toàn Dàn
+          </button>
+          <button onclick="apiCall('/api/action/warmup_all', 'POST')" class="bg-[#cba6f7] hover:bg-[#b4befe] text-[#11111b] px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 transition active:scale-95">
+            ❤️ Nuôi Nick Lướt Dạo (Warmup)
+          </button>
+          <button onclick="apiCall('/api/action/stop_all', 'POST')" class="bg-[#f38ba8] hover:bg-[#eba0ac] text-[#11111b] px-4 py-2 rounded-lg text-sm font-bold flex items-center gap-2 transition active:scale-95">
+            ⏹ Dừng Toàn Bộ
+          </button>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <input type="text" id="deviceSearch" oninput="filterDevices()" placeholder="Lọc theo serial, nickname, chủ đề..." class="bg-[#181825] border border-[#313244] rounded-lg px-3 py-1.5 text-xs text-[#cdd6f4] placeholder-[#6c7086] w-64 focus:outline-none focus:border-[#89b4fa]">
+        </div>
+      </div>
+
+      <div class="bg-[#1e1e2e] border border-[#313244] rounded-xl overflow-hidden shadow-md">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr class="bg-[#181825] border-b border-[#313244] text-[#a6adc8] font-bold uppercase tracking-wider text-[11px]">
+                <th class="p-3.5">#</th>
+                <th class="p-3.5">Serial Thiết Bị</th>
+                <th class="p-3.5">Tên Box Farm</th>
+                <th class="p-3.5">Nick TikTok</th>
+                <th class="p-3.5">Chủ Đề (Niche)</th>
+                <th class="p-3.5">Kênh Nguồn Đã Gán</th>
+                <th class="p-3.5 text-center">Đã Đăng</th>
+                <th class="p-3.5 text-center">Pin</th>
+                <th class="p-3.5">Trạng Thái</th>
+              </tr>
+            </thead>
+            <tbody id="deviceTableBody" class="divide-y divide-[#313244]/50">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: Kênh Nguồn & Nick TikTok -->
+    <section id="tab_profiles" class="tab-content hidden space-y-4">
+      <div class="bg-[#1e1e2e] border border-[#313244] rounded-xl p-5 shadow-md">
+        <div class="flex items-center justify-between border-b border-[#313244] pb-3 mb-4">
+          <div>
+            <h3 class="font-bold text-base text-[#89b4fa] flex items-center gap-2">
+              <span>👤</span> Gán Kênh Nguồn & Cấu Hình Độc Lập Cho Từng Máy
+            </h3>
+            <p class="text-xs text-[#a6adc8]">Mỗi điện thoại sở hữu kho video riêng, kênh nguồn riêng để tránh trùng lặp nội dung.</p>
+          </div>
+          <button onclick="saveCurrentProfile()" class="bg-[#a6e3a1] hover:bg-[#94e2d5] text-[#11111b] font-bold px-4 py-2 rounded-lg text-xs flex items-center gap-2 transition active:scale-95">
+            💾 Lưu Hồ Sơ Máy Này
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div class="space-y-3">
+            <div>
+              <label class="block text-xs font-semibold text-[#cdd6f4] mb-1">Chọn Máy / Serial ADB:</label>
+              <select id="profileDeviceSelect" onchange="loadProfileIntoForm(this.value)" class="w-full bg-[#181825] border border-[#313244] rounded-lg px-3 py-2 text-xs text-[#cdd6f4] focus:outline-none focus:border-[#89b4fa]">
+              </select>
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-[#cdd6f4] mb-1">Nick TikTok (Username):</label>
+              <input type="text" id="profUsername" placeholder="@nguyennminhh256" class="w-full bg-[#181825] border border-[#313244] rounded-lg px-3 py-2 text-xs text-[#cdd6f4] focus:outline-none focus:border-[#89b4fa]">
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-[#cdd6f4] mb-1">Chủ Đề Nội Dung (Niche):</label>
+              <input type="text" id="profTopic" placeholder="Review Phim / Marvel / Gia Dụng" class="w-full bg-[#181825] border border-[#313244] rounded-lg px-3 py-2 text-xs text-[#cdd6f4] focus:outline-none focus:border-[#89b4fa]">
+            </div>
+          </div>
+
+          <div class="space-y-3">
+            <div>
+              <label class="block text-xs font-semibold text-[#cdd6f4] mb-1">Link Kênh Nguồn (Douyin / Shorts / Reels):</label>
+              <input type="text" id="profSourceUrl" placeholder="https://www.youtube.com/@MarvelVN/shorts" class="w-full bg-[#181825] border border-[#313244] rounded-lg px-3 py-2 text-xs text-[#cdd6f4] focus:outline-none focus:border-[#89b4fa]">
+            </div>
+
+            <div>
+              <label class="block text-xs font-semibold text-[#cdd6f4] mb-1">Thư Mục Video Riêng Của Máy:</label>
+              <input type="text" id="profVideoFolder" placeholder="videos/phim" class="w-full bg-[#181825] border border-[#313244] rounded-lg px-3 py-2 text-xs text-[#cdd6f4] focus:outline-none focus:border-[#89b4fa]">
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: Xử Lý Video & Lách Bản Quyền -->
+    <section id="tab_video" class="tab-content hidden space-y-4">
+      <div class="bg-[#1e1e2e] border border-[#313244] rounded-xl p-5 shadow-md space-y-4">
+        <div>
+          <h3 class="font-bold text-base text-[#89b4fa] flex items-center gap-2">
+            <span>🎬</span> Phòng Xử Lý Video Reup & Lách Bản Quyền (FFmpeg Engine)
+          </h3>
+          <p class="text-xs text-[#a6adc8]">Tải video không logo & tự động áp dụng 5 tầng bộ lọc biến đổi hash chống quét AI ByteDance.</p>
+        </div>
+
+        <div class="bg-[#181825] border border-[#313244] rounded-lg p-3.5 flex flex-wrap items-center gap-3">
+          <span class="text-xs font-semibold text-[#cdd6f4]">Tải nhanh video từ link:</span>
+          <input type="text" id="quickVideoUrl" placeholder="Dán link Douyin, TikTok, YouTube Shorts..." class="flex-1 bg-[#1e1e2e] border border-[#313244] rounded-lg px-3 py-1.5 text-xs text-[#cdd6f4] focus:outline-none">
+          <button onclick="showToast('Đã gửi yêu cầu tải video!')" class="bg-[#89b4fa] hover:bg-[#b4befe] text-[#11111b] font-bold px-4 py-1.5 rounded-lg text-xs transition active:scale-95 flex items-center gap-1.5">
+            ⬇️ Tải Không Logo
+          </button>
+        </div>
+
+        <div class="bg-[#181825] border border-[#313244] rounded-lg p-4 space-y-3">
+          <h4 class="text-xs font-bold text-[#cba6f7] uppercase tracking-wider">Cấu Hình 5 Bộ Lọc Chống Thuật Toán ByteDance:</h4>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <label class="flex items-center gap-2.5 p-2 bg-[#1e1e2e] border border-[#313244] rounded-lg cursor-pointer">
+              <input type="checkbox" checked class="accent-[#89b4fa] w-4 h-4 rounded">
+              <span class="text-xs text-[#cdd6f4]">Lật gương hình ảnh (Horizontal Flip)</span>
+            </label>
+            <label class="flex items-center gap-2.5 p-2 bg-[#1e1e2e] border border-[#313244] rounded-lg cursor-pointer">
+              <input type="checkbox" checked class="accent-[#89b4fa] w-4 h-4 rounded">
+              <span class="text-xs text-[#cdd6f4]">Phóng to 1.04x & Cắt viền lệch tâm (Zoom & Crop)</span>
+            </label>
+            <label class="flex items-center gap-2.5 p-2 bg-[#1e1e2e] border border-[#313244] rounded-lg cursor-pointer">
+              <input type="checkbox" checked class="accent-[#89b4fa] w-4 h-4 rounded">
+              <span class="text-xs text-[#cdd6f4]">Tăng tốc độ 1.03x - 1.05x (Pitch Preserve)</span>
+            </label>
+            <label class="flex items-center gap-2.5 p-2 bg-[#1e1e2e] border border-[#313244] rounded-lg cursor-pointer">
+              <input type="checkbox" checked class="accent-[#89b4fa] w-4 h-4 rounded">
+              <span class="text-xs text-[#cdd6f4]">Color Grading (Thay đổi tương phản/độ sáng)</span>
+            </label>
+            <label class="flex items-center gap-2.5 p-2 bg-[#1e1e2e] border border-[#313244] rounded-lg cursor-pointer md:col-span-2">
+              <input type="checkbox" checked class="accent-[#89b4fa] w-4 h-4 rounded">
+              <span class="text-xs text-[#cdd6f4]">Xóa sạch EXIF Device Metadata & Tạo MD5 Hash Mới Tinh</span>
+            </label>
+          </div>
+        </div>
+
+        <button onclick="showToast('Bắt đầu xử lý lách bản quyền video!')" class="w-full bg-[#a6e3a1] hover:bg-[#94e2d5] text-[#11111b] font-bold py-2.5 rounded-lg text-xs uppercase tracking-wider transition active:scale-[0.99] glow-green">
+          🚀 Bắt Đầu Lách Bản Quyền Toàn Bộ Thư Mục raw_videos/
+        </button>
+      </div>
+    </section>
+
+    <!-- TAB 4: Mắt Thần AI & Telegram -->
+    <section id="tab_settings" class="tab-content hidden space-y-4">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="bg-[#1e1e2e] border border-[#313244] rounded-xl p-5 shadow-md space-y-3">
+          <h3 class="font-bold text-sm text-[#89b4fa]">🤖 Tầng 2: Mắt Thần AI Cứu Hộ (Gemini Vision)</h3>
+          <div>
+            <label class="block text-xs font-semibold text-[#cdd6f4] mb-1">Gemini API Key:</label>
+            <input type="password" id="cfgGeminiKey" class="w-full bg-[#181825] border border-[#313244] rounded-lg px-3 py-2 text-xs text-[#cdd6f4] focus:outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-[#cdd6f4] mb-1">Mô Hình AI Vision:</label>
+            <select id="cfgGeminiModel" class="w-full bg-[#181825] border border-[#313244] rounded-lg px-3 py-2 text-xs text-[#cdd6f4] focus:outline-none">
+              <option value="gemini-2.5-flash">gemini-2.5-flash</option>
+              <option value="gemini-1.5-flash">gemini-1.5-flash</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="bg-[#1e1e2e] border border-[#313244] rounded-xl p-5 shadow-md space-y-3">
+          <h3 class="font-bold text-sm text-[#f9e2af]">📢 Tầng 3: Báo Cáo Từ Xa Qua Telegram Bot</h3>
+          <div>
+            <label class="block text-xs font-semibold text-[#cdd6f4] mb-1">Telegram Bot Token:</label>
+            <input type="text" id="cfgTgToken" class="w-full bg-[#181825] border border-[#313244] rounded-lg px-3 py-2 text-xs text-[#cdd6f4] focus:outline-none">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-[#cdd6f4] mb-1">Telegram Chat ID:</label>
+            <input type="text" id="cfgTgChat" class="w-full bg-[#181825] border border-[#313244] rounded-lg px-3 py-2 text-xs text-[#cdd6f4] focus:outline-none">
+          </div>
+          <div class="flex gap-2 pt-1">
+            <button onclick="testTelegram()" class="flex-1 bg-[#313244] hover:bg-[#45475a] text-[#cdd6f4] font-semibold py-2 rounded-lg text-xs transition">
+              📩 Gửi Thử Tin Nhắn
+            </button>
+            <button onclick="saveSettings()" class="flex-1 bg-[#a6e3a1] hover:bg-[#94e2d5] text-[#11111b] font-bold py-2 rounded-lg text-xs transition">
+              💾 Lưu Cài Đặt
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bottom: Real-Time Terminal Logs -->
+    <div class="bg-[#1e1e2e] border border-[#313244] rounded-xl overflow-hidden shadow-lg flex flex-col flex-1 min-h-[260px]">
+      <div class="bg-[#181825] px-4 py-2.5 border-b border-[#313244] flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-[#89b4fa] animate-ping"></span>
+          <h4 class="font-bold text-xs text-[#cdd6f4] tracking-wide uppercase">
+            📋 Nhật Ký Hoạt Động Thời Gian Thực (Autonomous Real-time Logs)
+          </h4>
+        </div>
+        <div class="flex items-center gap-2 text-xs">
+          <button onclick="fetchLogs(true)" class="bg-[#313244] hover:bg-[#45475a] text-[#cdd6f4] px-2.5 py-1 rounded text-[11px] transition">
+            Xóa Log
+          </button>
+        </div>
+      </div>
+
+      <div id="logConsole" class="p-3.5 bg-[#11111b] font-mono text-[12px] overflow-y-auto max-h-[240px] space-y-1.5 flex-1">
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Notification Toast -->
+  <div id="toast" class="fixed bottom-6 right-6 bg-[#181825] border border-[#89b4fa] text-[#cdd6f4] px-4 py-2.5 rounded-xl shadow-2xl text-xs flex items-center gap-2 transition-all transform translate-y-20 opacity-0 z-50">
+    <span id="toastIcon">ℹ️</span>
+    <span id="toastMsg">Thông báo</span>
+  </div>
+
+  <script>
+    let devices = [];
+
+    function showToast(msg, icon = "✅") {
+      const toast = document.getElementById("toast");
+      document.getElementById("toastIcon").innerText = icon;
+      document.getElementById("toastMsg").innerText = msg;
+      toast.classList.remove("translate-y-20", "opacity-0");
+      setTimeout(() => toast.classList.add("translate-y-20", "opacity-0"), 3500);
+    }
+
+    function switchTab(tabId) {
+      document.querySelectorAll(".tab-content").forEach(el => el.classList.add("hidden"));
+      document.querySelectorAll(".tab-btn").forEach(btn => {
+        btn.classList.remove("bg-[#89b4fa]", "text-[#11111b]", "shadow-sm");
+        btn.classList.add("text-[#a6adc8]");
+      });
+      document.getElementById(`tab_${tabId}`).classList.remove("hidden");
+      const activeBtn = document.getElementById(`tabBtn_${tabId}`);
+      activeBtn.classList.add("bg-[#89b4fa]", "text-[#11111b]", "shadow-sm");
+      activeBtn.classList.remove("text-[#a6adc8]");
+    }
+
+    async function apiCall(endpoint, method = "GET", data = null) {
+      try {
+        const opts = { method, headers: { 'Content-Type': 'application/json' } };
+        if (data) opts.body = JSON.stringify(data);
+        const res = await fetch(endpoint, opts);
+        const json = await res.json();
+        showToast(json.message || "Thao tác thành công!");
+        return json;
+      } catch (err) {
+        showToast("Lỗi kết nối máy chủ!", "❌");
+      }
+    }
+
+    async function fetchLiveDevices() {
+      try {
+        const res = await fetch("/api/devices");
+        devices = await res.json();
+        renderTable(devices);
+        document.getElementById("metricTotal").innerText = `${devices.length} Máy`;
+        document.getElementById("metricReady").innerText = `${devices.filter(d => !d.status.includes('Lỗi')).length} Sẵn Sàng`;
+        const totalPosts = devices.reduce((sum, d) => sum + (parseInt(d.total_posts) || 0), 0);
+        document.getElementById("metricPosts").innerText = `${totalPosts} Video`;
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    function renderTable(devList) {
+      const tbody = document.getElementById("deviceTableBody");
+      tbody.innerHTML = "";
+      const select = document.getElementById("profileDeviceSelect");
+      select.innerHTML = "";
+
+      devList.forEach((dev, idx) => {
+        const tr = document.createElement("tr");
+        tr.className = "hover:bg-[#313244]/30 transition";
+        tr.innerHTML = `
+          <td class="p-3 text-[#6c7086] font-mono">${idx + 1}</td>
+          <td class="p-3 font-mono font-medium text-[#89b4fa]">${dev.serial}</td>
+          <td class="p-3 font-semibold text-[#cdd6f4]">${dev.box_name}</td>
+          <td class="p-3 font-medium text-[#fab387]">${dev.username}</td>
+          <td class="p-3 text-[#a6adc8]">${dev.topic}</td>
+          <td class="p-3 text-[#a6adc8] truncate max-w-[180px]">${dev.source_channel_url || "Chưa gán"}</td>
+          <td class="p-3 text-center font-bold text-[#cba6f7]">${dev.total_posts}</td>
+          <td class="p-3 text-center font-bold text-[#a6e3a1]">${dev.battery}</td>
+          <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-[#a6e3a1]/15 text-[#a6e3a1] border border-[#a6e3a1]/30">● ${dev.status}</span></td>
+        `;
+        tbody.appendChild(tr);
+
+        const opt = document.createElement("option");
+        opt.value = dev.serial;
+        opt.innerText = `${dev.box_name} - ${dev.serial}`;
+        select.appendChild(opt);
+      });
+
+      if (devList.length > 0) loadProfileIntoForm(devList[0].serial);
+    }
+
+    function loadProfileIntoForm(serial) {
+      const dev = devices.find(d => d.serial === serial);
+      if (!dev) return;
+      document.getElementById("profUsername").value = dev.username || "";
+      document.getElementById("profTopic").value = dev.topic || "";
+      document.getElementById("profSourceUrl").value = dev.source_channel_url || "";
+      document.getElementById("profVideoFolder").value = dev.video_folder || "videos";
+    }
+
+    async function saveCurrentProfile() {
+      const serial = document.getElementById("profileDeviceSelect").value;
+      const payload = {
+        serial: serial,
+        username: document.getElementById("profUsername").value,
+        topic: document.getElementById("profTopic").value,
+        source_channel_url: document.getElementById("profSourceUrl").value,
+        video_folder: document.getElementById("profVideoFolder").value
+      };
+      await apiCall("/api/profiles/save", "POST", payload);
+      fetchLiveDevices();
+    }
+
+    async function fetchLogs(clear = false) {
+      if (clear) {
+        await apiCall("/api/logs/clear", "POST");
+      }
+      const res = await fetch("/api/logs");
+      const logs = await res.json();
+      const consoleEl = document.getElementById("logConsole");
+      consoleEl.innerHTML = "";
+      logs.forEach(l => {
+        const div = document.createElement("div");
+        div.className = "flex items-start gap-2 text-xs leading-relaxed";
+        div.innerHTML = `
+          <span class="text-[#6c7086] shrink-0 font-mono">[${l.time}]</span>
+          <span class="font-bold px-1.5 py-0.2 rounded text-[10px] bg-[#89b4fa]/20 text-[#89b4fa] border border-[#89b4fa]/40">[${l.tag}]</span>
+          <span class="text-[#cdd6f4] break-all">${l.msg}</span>
+        `;
+        consoleEl.appendChild(div);
+      });
+      consoleEl.scrollTop = consoleEl.scrollHeight;
+    }
+
+    async function loadSettings() {
+      const res = await fetch("/api/config");
+      const cfg = await res.json();
+      document.getElementById("cfgGeminiKey").value = cfg.gemini_api_key || "";
+      document.getElementById("cfgGeminiModel").value = cfg.gemini_model || "gemini-2.5-flash";
+      document.getElementById("cfgTgToken").value = cfg.telegram_bot_token || "";
+      document.getElementById("cfgTgChat").value = cfg.telegram_chat_id || "";
+    }
+
+    async function saveSettings() {
+      const payload = {
+        gemini_api_key: document.getElementById("cfgGeminiKey").value,
+        gemini_model: document.getElementById("cfgGeminiModel").value,
+        telegram_bot_token: document.getElementById("cfgTgToken").value,
+        telegram_chat_id: document.getElementById("cfgTgChat").value
+      };
+      await apiCall("/api/config", "POST", payload);
+    }
+
+    async function testTelegram() {
+      const payload = {
+        bot_token: document.getElementById("cfgTgToken").value,
+        chat_id: document.getElementById("cfgTgChat").value
+      };
+      await apiCall("/api/telegram/test", "POST", payload);
+    }
+
+    window.onload = () => {
+      fetchLiveDevices();
+      loadSettings();
+      fetchLogs();
+      setInterval(fetchLogs, 3000);
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,21 @@
+{
+  "system": {
+    "adb_ports": ["5037", "5038"],
+    "max_concurrent_workers": 4,
+    "batch_delay_min_seconds": 15,
+    "batch_delay_max_seconds": 30,
+    "action_delay_min_seconds": 3,
+    "action_delay_max_seconds": 8
+  },
+  "device_optimization": {
+    "auto_dim_screen": true,
+    "screen_brightness": 0,
+    "mute_all_volumes": true,
+    "prevent_sleep": true,
+    "screen_timeout_seconds": 1800
+  },
+  "proxy": {
+    "enabled": false,
+    "proxy_file": "proxies.txt"
+  }
+}
