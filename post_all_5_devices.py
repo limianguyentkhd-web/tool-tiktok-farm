@@ -9,6 +9,17 @@ if hasattr(sys.stdout, 'reconfigure'):
 
 adb = r'C:\Program Files (x86)\xiaowei_android\tools\adb.exe'
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+READY_TO_POST_DIR = os.path.join(BASE_DIR, "videos", "ready_to_post")
+os.makedirs(READY_TO_POST_DIR, exist_ok=True)
+
+# Quét video sẵn sàng đăng từ videos/ready_to_post/ đã duyệt
+ready_videos = [
+    os.path.join(READY_TO_POST_DIR, f)
+    for f in os.listdir(READY_TO_POST_DIR)
+    if f.lower().endswith((".mp4", ".mov", ".mkv", ".webm"))
+] if os.path.exists(READY_TO_POST_DIR) else []
+
 tasks = [
     {
         'name': 'Máy 1 (Hiếu)',
@@ -45,7 +56,7 @@ tasks = [
 def run(cmd_base, args):
     return subprocess.run(cmd_base + args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, errors='replace')
 
-for t in tasks:
+for t_idx, t in enumerate(tasks):
     name = t['name']
     port = t['port']
     serial = t['serial']
@@ -55,6 +66,16 @@ for t in tasks:
     print(f"\n========================================================")
     print(f"🚀 BẮT ĐẦU ĐĂNG VIDEO CHO {name} ({serial})")
     print(f"========================================================")
+
+    # 0. Nếu có video đã duyệt trong ready_to_post/, đẩy qua ADB vào Box Phone
+    if t_idx < len(ready_videos):
+        vid_to_push = ready_videos[t_idx]
+        rem_name = os.path.basename(vid_to_push)
+        rem_dest = f"/sdcard/DCIM/Camera/{rem_name}"
+        print(f"[*] 📲 Đang nạp video thành phẩm vào {name}: {rem_name}...")
+        run(cmd_base, ['push', vid_to_push, rem_dest])
+        run(cmd_base, ['shell', 'am', 'broadcast', '-a', 'android.intent.action.MEDIA_SCANNER_SCAN_FILE', '-d', f'file://{rem_dest}'])
+        time.sleep(1.5)
 
     # 1. Quay về màn hình Profile sạch
     run(cmd_base, ['shell', 'input', 'keyevent', '4'])

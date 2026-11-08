@@ -213,53 +213,93 @@
       </div>
     </section>
 
-    <!-- TAB 3: Xử Lý Video & Lách Bản Quyền -->
+        <!-- TAB 3: Xử Lý Video & Lách Bản Quyền -->
     <section id="tab_video" class="tab-content hidden space-y-4">
+      <!-- CỤM 1: CÔNG CỤ VIỆT HÓA & LÁCH BẢN QUYỀN 2026 -->
       <div class="bg-[#1e1e2e] border border-[#313244] rounded-xl p-5 shadow-md space-y-4">
-        <div>
-          <h3 class="font-bold text-base text-[#89b4fa] flex items-center gap-2">
-            <span>🎬</span> Phòng Xử Lý Video Reup & Lách Bản Quyền (FFmpeg Engine)
-          </h3>
-          <p class="text-xs text-[#a6adc8]">Tải video không logo & tự động áp dụng 5 tầng bộ lọc biến đổi hash chống quét AI ByteDance.</p>
+        <div class="flex items-center justify-between border-b border-[#313244] pb-3">
+          <div>
+            <h3 class="font-bold text-base text-[#89b4fa] flex items-center gap-2">
+              <span>🎬</span> MatrixFlow Video AI & Anti-Detection Studio 2026
+            </h3>
+            <p class="text-xs text-[#a6adc8]">Tách âm gốc, thuyết minh tiếng Việt Edge-TTS, Burn phụ đề động & phá vỡ Content ID ByteDance.</p>
+          </div>
+          <span class="px-2.5 py-1 rounded bg-[#a6e3a1]/10 text-[#a6e3a1] text-[11px] font-bold border border-[#a6e3a1]/30">
+            FFmpeg 8.1 Engine Sẵn Sàng
+          </span>
         </div>
 
-        <div class="bg-[#181825] border border-[#313244] rounded-lg p-3.5 flex flex-wrap items-center gap-3">
-          <span class="text-xs font-semibold text-[#cdd6f4]">Tải nhanh video từ link:</span>
-          <input type="text" id="quickVideoUrl" placeholder="Dán link Douyin, TikTok, YouTube Shorts..." class="flex-1 bg-[#1e1e2e] border border-[#313244] rounded-lg px-3 py-1.5 text-xs text-[#cdd6f4] focus:outline-none">
-          <button onclick="showToast('Đã gửi yêu cầu tải video!')" class="bg-[#89b4fa] hover:bg-[#b4befe] text-[#11111b] font-bold px-4 py-1.5 rounded-lg text-xs transition active:scale-95 flex items-center gap-1.5">
-            ⬇️ Tải Không Logo
-          </button>
-        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Cột trái: Nguồn video & Kịch bản -->
+          <div class="space-y-3">
+            <div>
+              <label class="block text-xs font-semibold text-[#cdd6f4] mb-1">Link Video Nguồn (Tự động tải không logo):</label>
+              <input type="text" id="procVideoUrl" placeholder="Dán link Douyin, TikTok, Facebook Reels, Shorts..." class="w-full bg-[#181825] border border-[#313244] rounded-lg px-3 py-2 text-xs text-[#cdd6f4] focus:outline-none focus:border-[#89b4fa]">
+              <span class="text-[10px] text-[#6c7086] mt-0.5 block">* Bỏ trống nếu muốn xử lý video thô có sẵn trong raw_videos/</span>
+            </div>
 
-        <div class="bg-[#181825] border border-[#313244] rounded-lg p-4 space-y-3">
-          <h4 class="text-xs font-bold text-[#cba6f7] uppercase tracking-wider">Cấu Hình 5 Bộ Lọc Chống Thuật Toán ByteDance:</h4>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <label class="flex items-center gap-2.5 p-2 bg-[#1e1e2e] border border-[#313244] rounded-lg cursor-pointer">
-              <input type="checkbox" checked class="accent-[#89b4fa] w-4 h-4 rounded">
-              <span class="text-xs text-[#cdd6f4]">Lật gương hình ảnh (Horizontal Flip)</span>
-            </label>
-            <label class="flex items-center gap-2.5 p-2 bg-[#1e1e2e] border border-[#313244] rounded-lg cursor-pointer">
-              <input type="checkbox" checked class="accent-[#89b4fa] w-4 h-4 rounded">
-              <span class="text-xs text-[#cdd6f4]">Phóng to 1.04x & Cắt viền lệch tâm (Zoom & Crop)</span>
-            </label>
-            <label class="flex items-center gap-2.5 p-2 bg-[#1e1e2e] border border-[#313244] rounded-lg cursor-pointer">
-              <input type="checkbox" checked class="accent-[#89b4fa] w-4 h-4 rounded">
-              <span class="text-xs text-[#cdd6f4]">Tăng tốc độ 1.03x - 1.05x (Pitch Preserve)</span>
-            </label>
-            <label class="flex items-center gap-2.5 p-2 bg-[#1e1e2e] border border-[#313244] rounded-lg cursor-pointer">
-              <input type="checkbox" checked class="accent-[#89b4fa] w-4 h-4 rounded">
-              <span class="text-xs text-[#cdd6f4]">Color Grading (Thay đổi tương phản/độ sáng)</span>
-            </label>
-            <label class="flex items-center gap-2.5 p-2 bg-[#1e1e2e] border border-[#313244] rounded-lg cursor-pointer md:col-span-2">
-              <input type="checkbox" checked class="accent-[#89b4fa] w-4 h-4 rounded">
-              <span class="text-xs text-[#cdd6f4]">Xóa sạch EXIF Device Metadata & Tạo MD5 Hash Mới Tinh</span>
-            </label>
+            <div>
+              <label class="block text-xs font-semibold text-[#cdd6f4] mb-1">Kịch Bản Thuyết Minh Tiếng Việt (Edge-TTS AI):</label>
+              <textarea id="procScriptText" rows="4" placeholder="Nhập lời bình, kịch bản thuyết minh tiếng Việt tại đây. AI sẽ tự động đọc và tạo Hardsub đồng bộ chuẩn xác..." class="w-full bg-[#181825] border border-[#313244] rounded-lg p-2.5 text-xs text-[#cdd6f4] focus:outline-none focus:border-[#89b4fa]"></textarea>
+            </div>
+          </div>
+
+          <!-- Cột phải: Cấu hình bộ lọc & Giọng đọc AI -->
+          <div class="space-y-3">
+            <div>
+              <label class="block text-xs font-semibold text-[#cdd6f4] mb-1">Giọng Đọc Thuyết Minh Tiếng Việt:</label>
+              <select id="procVoice" class="w-full bg-[#181825] border border-[#313244] rounded-lg px-3 py-2 text-xs text-[#cdd6f4] focus:outline-none focus:border-[#89b4fa]">
+                <option value="vi-VN-NamMinhNeural" selected>🎙️ Nam Minh (Nam - Trầm ấm, công nghệ, review viral)</option>
+                <option value="vi-VN-HoaiMyNeural">🎙️ Hoài My (Nữ - Truyền cảm, ngọt ngào, cuốn hút)</option>
+              </select>
+            </div>
+
+            <div class="bg-[#181825] border border-[#313244] rounded-lg p-3 space-y-2">
+              <h4 class="text-[11px] font-bold text-[#cba6f7] uppercase tracking-wider">Bộ Lọc Lách Thuật Toán 2026:</h4>
+              <label class="flex items-center gap-2 text-xs text-[#cdd6f4] cursor-pointer">
+                <input type="checkbox" id="procHasTextOverlay" class="accent-[#89b4fa] w-4 h-4 rounded">
+                <span>🛡️ Video có sẵn chữ/logo (Tự TẮT lật gương để không ngược chữ)</span>
+              </label>
+              <label class="flex items-center gap-2 text-xs text-[#cdd6f4] cursor-pointer">
+                <input type="checkbox" id="procPatternInterrupt" checked class="accent-[#89b4fa] w-4 h-4 rounded">
+                <span>⚡ Pattern Interrupt 2s đầu (Cắt 1.5-2.0s & Zoom in 1.1x phá vỡ 3s đầu)</span>
+              </label>
+              <label class="flex items-center gap-2 text-xs text-[#cdd6f4] cursor-pointer">
+                <input type="checkbox" id="procHardsub" checked class="accent-[#89b4fa] w-4 h-4 rounded">
+                <span>📝 Hardsub Vàng Nổi Bật (#FFD700) viền đen, MarginV=80</span>
+              </label>
+              <label class="flex items-center gap-2 text-xs text-[#cdd6f4] cursor-pointer">
+                <input type="checkbox" id="procBgm" checked class="accent-[#89b4fa] w-4 h-4 rounded">
+                <span>🎵 Nhạc nền ngầm BGM (15-20% amix, tách 100% tiếng gốc)</span>
+              </label>
+            </div>
           </div>
         </div>
 
-        <button onclick="showToast('Bắt đầu xử lý lách bản quyền video!')" class="w-full bg-[#a6e3a1] hover:bg-[#94e2d5] text-[#11111b] font-bold py-2.5 rounded-lg text-xs uppercase tracking-wider transition active:scale-[0.99] glow-green">
-          🚀 Bắt Đầu Lách Bản Quyền Toàn Bộ Thư Mục raw_videos/
+        <button onclick="submitProcessVideo()" class="w-full bg-[#a6e3a1] hover:bg-[#94e2d5] text-[#11111b] font-bold py-2.5 rounded-lg text-xs uppercase tracking-wider transition active:scale-[0.99] glow-green flex items-center justify-center gap-2">
+          <span>🚀</span> Bắt Đầu Render Việt Hóa & Lách Bản Quyền Tự Động
         </button>
+      </div>
+
+      <!-- CỤM 2: MATRIXFLOW VIDEO APPROVAL (DUYỆT VIDEO TRÊN MOBILE / PC) -->
+      <div class="bg-[#1e1e2e] border border-[#313244] rounded-xl p-5 shadow-md space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-[#313244] pb-3">
+          <div>
+            <h3 class="font-bold text-base text-[#fab387] flex items-center gap-2">
+              <span>📱</span> MatrixFlow Video Approval Dashboard (Duyệt Đăng Phone Farm)
+            </h3>
+            <p class="text-xs text-[#a6adc8]">Xem trước video thành phẩm trong ready_to_post/ và duyệt trực tiếp từ điện thoại.</p>
+          </div>
+          <button onclick="fetchRenderedVideos()" class="bg-[#313244] hover:bg-[#45475a] text-[#cdd6f4] px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition">
+            🔄 Làm Mới Danh Sách
+          </button>
+        </div>
+
+        <div id="videoGalleryList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div class="p-8 text-center text-xs text-[#6c7086] col-span-full">
+            Đang tải danh sách video sẵn sàng duyệt...
+          </div>
+        </div>
       </div>
     </section>
 

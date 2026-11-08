@@ -1,0 +1,2 @@
+# Danh sach ID video da tai (Deduplication History)
+# Format: video_id | datetime | title | url

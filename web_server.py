@@ -202,6 +202,174 @@ def test_telegram():
         return jsonify({"status": "ok", "message": "Gửi tin nhắn Telegram thành công"})
     return jsonify({"status": "error", "message": "Gửi tin nhắn thất bại, hãy kiểm tra lại Bot Token và Chat ID"}), 400
 
+# =========================================================================
+# MATRIXFLOW SMART VIDEO ENGINE & APPROVAL DASHBOARD ENDPOINTS
+# =========================================================================
+READY_TO_POST_DIR = os.path.join(BASE_DIR, "videos", "ready_to_post")
+VIDEOS_REGISTRY_PATH = os.path.join(BASE_DIR, "videos_registry.json")
+os.makedirs(READY_TO_POST_DIR, exist_ok=True)
+
+def load_video_registry():
+    if os.path.exists(VIDEOS_REGISTRY_PATH):
+        try:
+            with open(VIDEOS_REGISTRY_PATH, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            return []
+    return []
+
+def save_video_registry(videos):
+    try:
+        with open(VIDEOS_REGISTRY_PATH, "w", encoding="utf-8") as f:
+            json.dump(videos, f, ensure_ascii=False, indent=2)
+    except Exception as e:
+        print(f"[-] Lỗi lưu registry video: {e}")
+
+@app.route("/api/videos", methods=["GET"])
+def get_videos():
+    """Lấy danh sách video sẵn sàng đăng, đồng bộ cùng thư mục ready_to_post/."""
+    registry = load_video_registry()
+    reg_map = {v.get("file_name"): v for v in registry if isinstance(v, dict)}
+    
+    # Quét thư mục vật lý nếu có file chưa nằm trong registry
+    if os.path.exists(READY_TO_POST_DIR):
+        disk_files = [f for f in os.listdir(READY_TO_POST_DIR) if f.lower().endswith((".mp4", ".mov", ".mkv", ".webm"))]
+        updated = False
+        for f in disk_files:
+            if f not in reg_map:
+                fpath = os.path.join(READY_TO_POST_DIR, f)
+                size_mb = round(os.path.getsize(fpath) / (1024 * 1024), 2)
+                mtime = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime(os.path.getmtime(fpath)))
+                item = {
+                    "id": f"vid_{int(os.path.getmtime(fpath))}",
+                    "title": os.path.splitext(f)[0].replace("_", " "),
+                    "file_name": f,
+                    "file_path": fpath,
+                    "preview_url": f"/api/videos/preview/{f}",
+                    "render_time": mtime,
+                    "duration": 0,
+                    "size_mb": size_mb,
+                    "voice_used": "N/A",
+                    "has_text_overlay": False,
+                    "md5_hash": "",
+                    "status": "pending_review"
+                }
+                registry.append(item)
+                reg_map[f] = item
+                updated = True
+        if updated:
+            save_video_registry(registry)
+            
+    return jsonify(registry)
+
+@app.route("/api/videos", methods=["POST"])
+def register_rendered_video():
+    """Webhook nhận thông báo từ auto_reup_processor.py sau khi render xong."""
+    data = request.json or {}
+    if not data.get("file_name"):
+        return jsonify({"status": "error", "message": "Thiếu file_name"}), 400
+
+    registry = load_video_registry()
+    existing_idx = next((i for i, v in enumerate(registry) if v.get("file_name") == data.get("file_name")), None)
+    if existing_idx is not None:
+        registry[existing_idx].update(data)
+    else:
+        registry.insert(0, data)
+        
+    save_video_registry(registry)
+    title = data.get("title", data.get("file_name"))
+    size = data.get("size_mb", 0)
+    add_log("VIDEO", f"🎬 Video mới render xong sẵn sàng duyệt: '{title}' ({size} MB)")
+    return jsonify({"status": "ok", "message": "Đã lưu thông tin video thành công"})
+
+@app.route("/api/videos/preview/<path:filename>", methods=["GET"])
+def preview_video(filename):
+    """Stream xem trước video cho trình duyệt máy tính & điện thoại."""
+    target_path = os.path.join(READY_TO_POST_DIR, filename)
+    if os.path.isfile(target_path):
+        return send_from_directory(READY_TO_POST_DIR, filename, mimetype="video/mp4")
+    target_fallback = os.path.join(BASE_DIR, "videos", filename)
+    if os.path.isfile(target_fallback):
+        return send_from_directory(os.path.join(BASE_DIR, "videos"), filename, mimetype="video/mp4")
+    return jsonify({"status": "error", "message": "Không tìm thấy file video"}), 404
+
+@app.route("/api/videos/<video_id>/approve", methods=["POST"])
+def approve_video(video_id):
+    """Người dùng duyệt video trên điện thoại để sẵn sàng đẩy vào Phone Farm."""
+    registry = load_video_registry()
+    found = False
+    for v in registry:
+        if v.get("id") == video_id or v.get("file_name") == video_id:
+            v["status"] = "approved"
+            found = True
+            add_log("APPROVAL", f"✅ Người dùng đã DUYỆT video: '{v.get('title')}'. Sẵn sàng đẩy qua ADB vào Box Phone!")
+            break
+    if found:
+        save_video_registry(registry)
+        return jsonify({"status": "ok", "message": "Đã phê duyệt video thành công"})
+    return jsonify({"status": "error", "message": "Không tìm thấy video cần duyệt"}), 404
+
+@app.route("/api/videos/<video_id>/reject", methods=["POST"])
+def reject_video(video_id):
+    """Người dùng loại bỏ video không ưng ý."""
+    registry = load_video_registry()
+    for v in registry:
+        if v.get("id") == video_id or v.get("file_name") == video_id:
+            v["status"] = "rejected"
+            add_log("APPROVAL", f"❌ Người dùng đã TỪ CHỐI video: '{v.get('title')}'")
+            break
+    save_video_registry(registry)
+    return jsonify({"status": "ok", "message": "Đã loại bỏ video"})
+
+@app.route("/api/videos/process_manual", methods=["POST"])
+def trigger_manual_process():
+    """Kích hoạt tiến trình render Việt Hóa & Lách Bản Quyền từ Web Dashboard."""
+    data = request.json or {}
+    url = data.get("url", "").strip()
+    script = data.get("script", "").strip()
+    voice = data.get("voice", "vi-VN-NamMinhNeural")
+    has_text = bool(data.get("has_text_overlay", False))
+
+    def run_bg():
+        try:
+            from auto_reup_processor import AutoReupProcessor
+            proc = AutoReupProcessor()
+            video_input = None
+            if url:
+                add_log("REUP", f"Đang tải video nguồn từ link: {url}...")
+                video_input = proc.download_url(url)
+            else:
+                raw_dir = os.path.join(BASE_DIR, "raw_videos")
+                raw_files = [
+                    os.path.join(raw_dir, f)
+                    for f in os.listdir(raw_dir)
+                    if f.lower().endswith((".mp4", ".mov", ".mkv"))
+                ]
+                if raw_files:
+                    video_input = raw_files[0]
+
+            if not video_input or not os.path.isfile(video_input):
+                add_log("REUP", "[-] Không tìm thấy video nguồn để xử lý.")
+                return
+
+            add_log("REUP", f"🚀 Đang render video: {os.path.basename(video_input)} với giọng {voice}...")
+            res = proc.process_video(
+                input_path=video_input,
+                script_text=script if script else None,
+                voice=voice,
+                has_text_overlay=has_text,
+                hflip=(not has_text),
+                pattern_interrupt=True,
+                send_webhook=True
+            )
+            if res:
+                add_log("REUP", f"🎉 Đã hoàn tất render! Video thành phẩm: {os.path.basename(res)}")
+        except Exception as ex:
+            add_log("ERROR", f"Lỗi khi render video từ Web Dashboard: {ex}")
+
+    threading.Thread(target=run_bg, daemon=True).start()
+    return jsonify({"status": "ok", "message": "Đã tiếp nhận yêu cầu và bắt đầu xử lý ngầm."})
+
 if __name__ == "__main__":
     add_log("SYS", "TikTok Farm Studio Web Server đã khởi động tại cổng 5000.")
     print("=" * 60)

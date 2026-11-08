@@ -1,25 +1,72 @@
 {
-  "_huong_dan": "Gán chủ đề và kênh TikTok cho từng máy điện thoại theo Serial ADB",
+  "_huong_dan": "Cấu hình phân loại Kênh Nuôi (Warmup) vs Kênh Bán Hàng (Affiliate) theo Serial ADB",
   "ce031713dba2c72101": {
     "kenh_tiktok": "@nguyennminhh256",
     "chu_de": "phim",
     "ten_chu_de": "Review Điện Ảnh & Marvel",
+    "channel_type": "warmup",
+    "attach_product": false,
     "thu_muc_video": "videos/phim",
     "link_kenh_nguon": "https://www.youtube.com/@zim_video/shorts",
-    "ghi_chu": "Kênh chuyên tóm tắt, chi tiết thú vị vũ trụ Marvel"
+    "ghi_chu": "Kênh mới tạo, tập trung nuôi tương tác & kéo view tự nhiên"
   },
   "ce01182188dbdcee0c": {
-    "kenh_tiktok": "@kenh_mau_02",
+    "kenh_tiktok": "@xuanlan_shop",
     "chu_de": "gia_dung",
     "ten_chu_de": "Gia Dụng Thông Minh / Affiliate",
+    "channel_type": "affiliate",
+    "attach_product": true,
+    "product_name": "Nồi Chiên Không Dầu Đa Năng",
     "thu_muc_video": "videos/gia_dung",
-    "ghi_chu": "Kênh review đồ tiện ích, đồ gia dụng gắn giỏ hàng"
+    "link_kenh_nguon": "https://www.douyin.com/user/MS4wLjABAAAA...",
+    "ghi_chu": "Kênh bán hàng TikTok Shop - Tự động gắn liên kết sản phẩm"
   },
   "9889db393438353953": {
-    "kenh_tiktok": "@kenh_mau_03",
+    "kenh_tiktok": "@thoitrang_douyin",
     "chu_de": "thoi_trang",
     "ten_chu_de": "Douyin OOTD & Thời Trang",
+    "channel_type": "warmup",
+    "attach_product": false,
     "thu_muc_video": "videos/thoi_trang",
-    "ghi_chu": "Kênh biến hình, outfit đường phố Douyin"
+    "link_kenh_nguon": "https://www.douyin.com/user/MS4wLjABAAAA...",
+    "ghi_chu": "Kênh nuôi biến hình, outfit đường phố kéo follow"
+  },
+  "9889da304447393259": {
+    "kenh_tiktok": "@hieu_tech_review",
+    "chu_de": "cong_nghe",
+    "ten_chu_de": "Review Công Nghệ Thông Minh",
+    "channel_type": "warmup",
+    "attach_product": false,
+    "thu_muc_video": "videos/ready_to_post",
+    "ghi_chu": "Máy 1 - Kênh nuôi công nghệ, kéo follower tự nhiên"
+  },
+  "988a17344c564b5657": {
+    "kenh_tiktok": "@thuyhuyen_outfit",
+    "chu_de": "thoi_trang",
+    "ten_chu_de": "Phối Đồ Nữ & Phụ Kiện",
+    "channel_type": "affiliate",
+    "attach_product": true,
+    "product_name": "Set Váy Nữ Phong Cách Hàn Quốc",
+    "thu_muc_video": "videos/ready_to_post",
+    "ghi_chu": "Máy 2 - Kênh bán hàng thời trang có gắn giỏ hàng"
+  },
+  "ce011821c38b263b05": {
+    "kenh_tiktok": "@bachvan_decor",
+    "chu_de": "decor_nha_dep",
+    "ten_chu_de": "Trang Trí Phòng & Đồ Tiện Ích",
+    "channel_type": "affiliate",
+    "attach_product": true,
+    "product_name": "Đèn Ngủ Phi Hành Gia Chiếu Sao",
+    "thu_muc_video": "videos/ready_to_post",
+    "ghi_chu": "Máy 4 - Kênh affiliate TikTok Shop"
+  },
+  "ce011821c45dc4060c": {
+    "kenh_tiktok": "@thuytrang_daily",
+    "chu_de": "doi_song",
+    "ten_chu_de": "Lifestyle & Vui Nhộn",
+    "channel_type": "warmup",
+    "attach_product": false,
+    "thu_muc_video": "videos/ready_to_post",
+    "ghi_chu": "Máy 5 - Kênh nuôi nick tương tác cao"
   }
 }
