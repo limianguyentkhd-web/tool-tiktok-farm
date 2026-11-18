@@ -34,3 +34,17 @@ Tài liệu này lưu trữ toàn bộ lịch sử các bên cung cấp nick Tik
   - 157.66.253.111:20152:gesCYj:TPayul (Gán Máy 11)
   - 160.250.185.90:17791:gesCYj:TPayul (Gán Máy 12)
   - 157.66.252.117:20155:gesCYj:TPayul (Gán Máy 06)
+
+
+---
+
+## 3. Lưu ý & Bài học quan trọng khi mua Nick Clone trắng (Cập nhật 18/11/2026)
+
+- **Bài học xương máu:** **Clone trắng BẮT BUỘC PHẢI NGÂM NUÔI mới cắn Follow, cắn Tim để đi làm nhiệm vụ GoLike / BumX.**
+- **Hậu quả nếu vội:** Nick clone mới tạo hoặc vừa mua về nếu đem đi làm nhiệm vụ ngay sẽ bị TikTok quét hành vi bất thường:
+  - Bị **nhả follow**, **nhả tim** (nút bấm nhảy nhưng hệ thống không tính, GoLike/BumX báo lỗi nhiệm vụ chưa hoàn thành).
+  - Kênh dính cờ spam, bị bóp shadowban hoặc checkpoint tài khoản.
+- **Quy trình ngâm chuẩn trước khi kích hoạt job:**
+  - **Ngày 1:** Đăng nhập vào máy có proxy, lướt video trang For You tự nhiên 10–15 phút (không follow/like dồn dập).
+  - **Ngày 2:** Cập nhật Avatar, Bio, lướt tương tác tự nhiên, thả vài tim nhẹ nhàng, xem live 3–5 phút.
+  - **Ngày 3:** Bắt đầu chạy GoLike/BumX từ số lượng ít (10–20 job/ngày) $\rightarrow$ Nick cắn 100% follow, tim và tăng dần đều.
