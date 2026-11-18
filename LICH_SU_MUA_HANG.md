@@ -54,3 +54,21 @@ Tài liệu này lưu trữ toàn bộ lịch sử các bên cung cấp nick Tik
   - **Ngày 1:** Đăng nhập vào máy có proxy, lướt video trang For You tự nhiên 10–15 phút (không follow/like dồn dập).
   - **Ngày 2:** Cập nhật Avatar, Bio, lướt tương tác tự nhiên, thả vài tim nhẹ nhàng, xem live 3–5 phút.
   - **Ngày 3:** Bắt đầu chạy GoLike/BumX từ số lượng ít (10–20 job/ngày) $\rightarrow$ Nick cắn 100% follow, tim và tăng dần đều.
+
+
+---
+
+## 4. Tài khoản TikTok Ads Manager & Quản Trị Quảng Cáo (Tạo ngày 18/11/2026)
+
+- **Thời gian khởi tạo:** 18/11/2026 - 12:57
+- **Nền tảng:** TikTok Ads Manager (`ads.tiktok.com`)
+- **Email đăng nhập:** `trongmikenco12@gmail.com`
+- **Mật khẩu:** `Minhquang@12345c`
+- **Tên tài khoản quảng cáo:** `Limia Media1118`
+- **Mã nhà quảng cáo (Advertiser ID / advid):** `7709385503195545606`
+- **Mục đích sử dụng:**
+  - Chạy quảng cáo Spark Ads mồi khi video tự nhiên nổ đơn trên dàn Farm.
+  - Nhận ưu đãi tín dụng quảng cáo TikTok (chương trình hoàn credits lên đến 160 triệu VNĐ).
+- **Ảnh chụp bằng chứng khởi tạo:**
+  - [20261118_tiktok_ads_register.jpg](file:///D:/TOOL%20TIKTOK/lich_su_mua_hang/20261118_tiktok_ads_register.jpg)
+  - [20261118_tiktok_ads_manager.jpg](file:///D:/TOOL%20TIKTOK/lich_su_mua_hang/20261118_tiktok_ads_manager.jpg)
