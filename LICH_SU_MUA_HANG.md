@@ -19,6 +19,12 @@ Tài liệu này lưu trữ toàn bộ lịch sử các bên cung cấp nick Tik
   - **Số lượng đã bán:** 115 đơn hàng
 - **Ảnh chụp giao dịch / thông tin nguồn:**
   - File nội bộ: [20261118_socialmmo_vietcenter_150k.jpg](file:///D:/TOOL%20TIKTOK/lich_su_mua_hang/20261118_socialmmo_vietcenter_150k.jpg)
+  - Ảnh bàn giao tài khoản: [20261118_chat_vietcenter_nick_150k.png](file:///D:/TOOL%20TIKTOK/lich_su_mua_hang/20261118_chat_vietcenter_nick_150k.png)
+- **Thông tin tài khoản bàn giao (11:42 - 18/11/2026):**
+  - **Username:** `trn.nh.qunh0819`
+  - **Mật khẩu:** `U19aqgsqxyu74@`
+  - **Lời dặn quan trọng của Shop:** *"b login 24h nhắn mình gắn giỏ"* (Đăng nhập vào máy ngâm 24 giờ rồi nhắn lại để shop kích hoạt gắn giỏ hàng TikTok Shop).
+- **Trạng thái hiện tại:** Đã lưu trữ an toàn vào hệ thống, **CHƯA ĐĂNG NHẬP** theo chỉ đạo.
 - **Ghi chú & Kiểm tra khi nhận nick:**
   - Kiểm tra quyền truy cập TikTok Live Studio trên PC/Điện thoại.
   - Kiểm tra tab Giỏ hàng TikTok Shop Affiliate (đảm bảo tự mở hoặc liên kết ổn định).
