@@ -153,7 +153,7 @@
     "current_likes": 2,
     "current_followers": 0,
     "current_following": 0,
-    "last_checked_at": "2026-11-18 11:14:38"
+    "last_checked_at": "2026-11-18 11:48:58"
   },
   {
     "stt": 2,
@@ -223,7 +223,7 @@
     "current_likes": 9,
     "current_followers": 0,
     "current_following": 0,
-    "last_checked_at": "2026-11-18 11:14:38"
+    "last_checked_at": "2026-11-18 11:48:58"
   },
   {
     "stt": 3,
@@ -259,7 +259,7 @@
     "current_likes": 3,
     "current_followers": 0,
     "current_following": 0,
-    "last_checked_at": "2026-11-18 11:14:38"
+    "last_checked_at": "2026-11-18 11:48:58"
   },
   {
     "stt": 5,
@@ -348,26 +348,30 @@
   {
     "serial": "ce0417146b840c3104",
     "box_name": "May_12 (SM-G998B)",
-    "username": "trn.nh.qunh0819",
-    "nickname": "Nick 150k Giỏ Hàng",
+    "username": "@trn.nh.qunh0819",
+    "nickname": "Trần Như Quỳnh",
     "login_type": "Gmail Cu",
-    "login_email": "",
-    "password": "U19aqgsqxyu74@",
-    "recovery_email": "",
-    "recovery_password": "",
+    "login_email": "tanzaniaphilicia17111996@hotmail.com",
+    "password": "TikTok123!",
+    "recovery_email": "tanzaniaphilicia17111996@hotmail.com",
+    "recovery_password": "jovvcrmch4",
     "two_factor_auth": "",
-    "proxy": "160.250.185.90:17791:gesCYj:TPayul",
+    "proxy": "160.250.185.90:17791:gesCYj:TPayuI",
     "niche": "Tong Hop / Viral",
     "video_folder": "videos/folder_12",
     "total_posted": 0,
     "last_posted_at": "",
     "last_post_title": "",
     "source_channel_url": "",
-    "status": "Chờ đăng nhập (Đã nhận từ vietcenter, chưa login)",
-    "notes": "Nick 150k giỏ hàng + live studio | Lưu ý: Login ngâm 24h nhắn shop gắn giỏ",
+    "status": "Live (Đã đăng nhập thành công)",
+    "notes": "Nick 150k mua shop vietcenter | Đã login thành công trên Máy 12 | Có CCCD sẵn sàng kích giỏ hàng chính chủ",
     "login_user": "trn.nh.qunh0819",
-    "login_pass": "U19aqgsqxyu74@",
-    "note": "Nick 150k giỏ hàng + live studio | Lưu ý: Login ngâm 24h nhắn shop gắn giỏ"
+    "login_pass": "TikTok123!",
+    "note": "Nick 150k mua shop vietcenter | Đã login thành công trên Máy 12 | Có CCCD sẵn sàng kích giỏ hàng chính chủ",
+    "current_followers": 142,
+    "current_following": 0,
+    "current_likes": 0,
+    "current_views": 0
   },
   {
     "stt": 6,
