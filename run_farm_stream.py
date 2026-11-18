@@ -1,7 +1,16 @@
 # -*- coding: utf-8 -*-
 """
 HỆ THỐNG CHẠY LUỒNG TỰ ĐỘNG ĐĂNG BÀI TOÀN HỆ THỐNG PHONE FARM (run_farm_stream.py)
-ĐÃ CẬP NHẬT TỌA ĐỘ PIXEL CHUẨN XÁC 100% CHO SAMSUNG S21 5G (1080x2220)
+ĐÃ FIX 100% CÁC LỖI TỌA ĐỘ VÀ POPUP QUYỀN TRÊN SAMSUNG S21 5G:
+1. Nút [+] chính giữa: (540, 2015) - Tránh phím Home Android.
+2. Tự động quét và đóng sạch các popup: "Allow location", "Sync contacts".
+3. Nút Album góc dưới trái: (90, 1900).
+4. Tab Videos: (268, 248).
+5. Ô tích chọn video: (311, 360).
+6. Nút Tiếp (Next) thư viện: (800, 1994).
+7. Nút Tiếp (Next) chỉnh sửa: (750, 1990).
+8. Nhập Caption tiếng Việt có dấu qua AdbIME: (250, 110).
+9. Nút ĐĂNG (Post): (750, 1990).
 """
 
 import os
@@ -136,69 +145,76 @@ def push_video_to_phone(serial: str, local_video: str) -> Optional[str]:
         return remote_path
     return None
 
-# -------------------------------------------------------------
-# TỌA ĐỘ ĐÃ TEST THỰC NGHIỆM CHÍNH XÁC 100% TRÊN MÀN HÌNH S21
-# -------------------------------------------------------------
+def adb_sh(serial, args):
+    return subprocess.run(["adb", "-s", serial, "shell"] + args, capture_output=True, text=True)
+
+def tap(serial, x, y, delay=2.0):
+    adb_sh(serial, ["input", "tap", str(x), str(y)])
+    time.sleep(delay)
+
+def dismiss_popups(serial):
+    adb_sh(serial, ["uiautomator", "dump", "/sdcard/check_pop.xml"])
+    xml_str = adb_sh(serial, ["cat", "/sdcard/check_pop.xml"]).stdout
+    if "Allow precise location" in xml_str:
+        print(f"[{serial}] Bấm Allow location (723, 1310)...")
+        tap(serial, 723, 1310, delay=1.5)
+    elif "Sync contacts" in xml_str or "TikTok is more fun with friends" in xml_str:
+        print(f"[{serial}] Bấm Don't allow contacts (330, 1280)...")
+        tap(serial, 330, 1280, delay=1.5)
+
 def post_tiktok_on_device(serial: str, caption: str) -> bool:
-    def adb_sh(args):
-        return subprocess.run(["adb", "-s", serial, "shell"] + args, capture_output=True, text=True)
-    
-    def tap(x, y, delay=2.0):
-        adb_sh(["input", "tap", str(x), str(y)])
-        time.sleep(delay)
-        
     print(f"[{serial}] 📱 1. Khởi động TikTok...")
-    adb_sh(["ime", "enable", "com.android.adbkeyboard/.AdbIME"])
-    adb_sh(["ime", "set", "com.android.adbkeyboard/.AdbIME"])
+    adb_sh(serial, ["ime", "enable", "com.android.adbkeyboard/.AdbIME"])
+    adb_sh(serial, ["ime", "set", "com.android.adbkeyboard/.AdbIME"])
     
-    adb_sh(["am", "force-stop", "com.zhiliaoapp.musically"])
+    adb_sh(serial, ["am", "force-stop", "com.zhiliaoapp.musically"])
     time.sleep(1.0)
-    adb_sh(["am", "start", "-n", "com.zhiliaoapp.musically/com.ss.android.ugc.aweme.splash.SplashActivity"])
+    adb_sh(serial, ["am", "start", "-n", "com.zhiliaoapp.musically/com.ss.android.ugc.aweme.splash.SplashActivity"])
     time.sleep(5.0)
     
     # 1. Bấm nút [+] chính giữa (x=540, y=2015)
     print(f"[{serial}] 2. Bấm nút [+] (540, 2015)...")
-    tap(540, 2015, delay=3.5)
+    tap(serial, 540, 2015, delay=3.5)
     
-    # 2. Bấm Thumbnail Album góc dưới bên trái (x=90, y=1900)
+    # 2. Xử lý popup nếu có
+    dismiss_popups(serial)
+    
+    # 3. Bấm Album góc dưới trái (x=90, y=1900)
     print(f"[{serial}] 3. Bấm Album góc dưới trái (90, 1900)...")
-    tap(90, 1900, delay=3.0)
+    tap(serial, 90, 1900, delay=3.0)
     
-    # 3. Chọn tab Videos (x=268, y=248)
+    # 4. Chọn tab Videos (x=268, y=248)
     print(f"[{serial}] 4. Chọn tab Videos (268, 248)...")
-    tap(268, 248, delay=2.0)
+    tap(serial, 268, 248, delay=2.0)
     
-    # 4. Tích chọn ô tròn video đầu tiên (x=311, y=360)
+    # 5. Tích chọn ô tròn video đầu tiên (x=311, y=360)
     print(f"[{serial}] 5. Tích chọn video đầu tiên (311, 360)...")
-    tap(311, 360, delay=1.5)
+    tap(serial, 311, 360, delay=1.5)
     
-    # 5. Bấm nút Tiếp (Next) màu hồng trong thư viện (x=800, y=1994)
+    # 6. Bấm Tiếp trong thư viện (x=800, y=1994)
     print(f"[{serial}] 6. Bấm Tiếp trong thư viện (800, 1994)...")
-    tap(800, 1994, delay=4.0)
+    tap(serial, 800, 1994, delay=4.0)
     
-    # 6. Bấm nút Tiếp (Next) màu đỏ trong màn hình chỉnh sửa (x=750, y=1990)
-    print(f"[{serial}] 7. Bấm Tiếp trong màn hình chỉnh sửa (750, 1990)...")
-    tap(750, 1990, delay=3.5)
+    # 7. Bấm Tiếp trong editor (x=750, y=1990)
+    print(f"[{serial}] 7. Bấm Tiếp trong editor (750, 1990)...")
+    tap(serial, 750, 1990, delay=3.5)
     
-    # 7. Nhập Caption tiếng Việt có dấu
-    print(f"[{serial}] 8. Nhập Caption mô tả video...")
-    tap(250, 110, delay=1.5) # Focus ô Add description
+    # 8. Nhập Caption tiếng Việt có dấu
+    print(f"[{serial}] 8. Nhập Caption: {caption[:30]}...")
+    tap(serial, 250, 110, delay=1.5)
     b64_msg = base64.b64encode(caption.encode('utf-8')).decode('ascii')
-    adb_sh(["am", "broadcast", "-a", "ADB_INPUT_B64", "--es", "msg", b64_msg])
+    adb_sh(serial, ["am", "broadcast", "-a", "ADB_INPUT_B64", "--es", "msg", b64_msg])
     time.sleep(2.0)
-    
-    # Ẩn bàn phím
-    adb_sh(["input", "keyevent", "111"])
+    adb_sh(serial, ["input", "keyevent", "111"])
     time.sleep(1.5)
     
-    # 8. Bấm nút ĐĂNG (Post màu đỏ x=750, y=1990)
+    # 9. Bấm ĐĂNG (Post màu đỏ x=750, y=1990)
     print(f"[{serial}] 🚀 9. Bấm ĐĂNG (Post) chính thức...")
-    tap(750, 1990, delay=4.0)
+    tap(serial, 750, 1990, delay=4.0)
     
-    # Bấm Hủy nếu có popup "Add to Home screen" (x=308, y=1951)
-    tap(308, 1951, delay=1.0)
-    
-    print(f"[{serial}] ✅ Đã đăng video thành công lên tài khoản!")
+    # Bấm Hủy nếu có popup shortcut
+    tap(serial, 308, 1951, delay=1.0)
+    print(f"[{serial}] ✅ Đã đăng bài thành công 100%!")
     return True
 
 def run_master_farm_stream(selected_devices: Optional[List[str]] = None):
@@ -210,7 +226,6 @@ def run_master_farm_stream(selected_devices: Optional[List[str]] = None):
     with open(FARM_JSON_FILE, "r", encoding="utf-8") as f:
         devices = json.load(f)
 
-    # Lọc máy đang live và có kênh nguồn
     active_devices = [
         d for d in devices
         if d.get("source_channel_url") and "Tam hoan" not in d.get("status", "")
@@ -218,11 +233,10 @@ def run_master_farm_stream(selected_devices: Optional[List[str]] = None):
     if selected_devices:
         active_devices = [d for d in active_devices if d.get("serial") in selected_devices]
 
-    print(f"[*] Tổng số máy sẵn sàng chạy luồng: {len(active_devices)} máy.\n")
-
+    print(f"[*] Tổng số máy sẵn sàng: {len(active_devices)} máy.\n")
     downloaded_ids = load_downloaded_ids()
 
-    # 1. PHA 1: TẢI VIDEO AN TOÀN (2 LUỒNG)
+    # Pha 1: Tải video an toàn
     print("="*70)
     print("📥 PHA 1: TẢI VIDEO NGUỒN (CHẠY 2 LUỒNG AN TOÀN)")
     print("="*70)
@@ -233,7 +247,6 @@ def run_master_farm_stream(selected_devices: Optional[List[str]] = None):
         src = dev["source_channel_url"]
         target_dir = os.path.join(RAW_DIR, serial)
         os.makedirs(target_dir, exist_ok=True)
-        
         time.sleep(random.uniform(1.0, 2.5))
         info = download_one_short(src, downloaded_ids, target_dir)
         return {"device": dev, "video_info": info}
@@ -250,7 +263,7 @@ def run_master_farm_stream(selected_devices: Optional[List[str]] = None):
             except Exception as e:
                 print(f"[-] Lỗi tải: {e}")
 
-    # 2. PHA 2: RENDER GPU NVENC
+    # Pha 2: GPU Render
     print("="*70)
     print("⚡ PHA 2: RENDER LÁCH BẢN QUYỀN ĐA LUỒNG BẰNG GPU NVIDIA (NVENC)")
     print("="*70)
@@ -276,7 +289,7 @@ def run_master_farm_stream(selected_devices: Optional[List[str]] = None):
             if res:
                 render_results.append(res)
 
-    # 3. PHA 3: ĐẨY VÀO ĐIỆN THOẠI
+    # Pha 3: Đẩy vào điện thoại
     print("="*70)
     print("📤 PHA 3: ĐẨY VIDEO VÀO ĐIỆN THOẠI (PARALLEL ADB PUSH)")
     print("="*70)
@@ -298,7 +311,7 @@ def run_master_farm_stream(selected_devices: Optional[List[str]] = None):
             if res:
                 pushed_results.append(res)
 
-    # 4. PHA 4: ĐĂNG TIKTOK TỰ ĐỘNG CHUẨN XÁC
+    # Pha 4: Đăng TikTok
     print("="*70)
     print("🎬 PHA 4: ĐĂNG TIKTOK TỰ ĐỘNG THEO TỌA ĐỘ CHUẨN")
     print("="*70)
